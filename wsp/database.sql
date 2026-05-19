@@ -1,0 +1,10 @@
+CREATE DATABASE web_demo;
+USE web_demo;
+
+CREATE TABLE content (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(100),
+  description TEXT,
+  image VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
