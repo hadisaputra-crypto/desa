@@ -304,75 +304,36 @@ class Bumdes extends BaseController
         return view('pages/v_template_back', $data);
     }
 
-    public function tambahProduk($id_bumdes = null)
+    public function cetakProduk($id_bumdes = null)
     {
+        $model = new \App\Models\ModelProduk();
         $data = [
-            'judul' => 'Tambah Produk',
-            'subjudul' => 'Form Tambah Produk BUMDes',
+            'judul' => 'Cetak Laporan Produk',
+            'subjudul' => 'Laporan Data Produk BUMDes',
             'menu' => 'bumdes',
             'submenu' => 'produk',
-            'page' => 'admin/bumdes/v_produk_tambah',
+            'page' => 'admin/bumdes/v_produk_cetak',
+            'produk' => $model->AllData($id_bumdes),
             'id_bumdes' => $id_bumdes,
             'bumdes_list' => $this->db->table('tbl_bumdes')->get()->getResultArray(),
         ];
         return view('pages/v_template_back', $data);
     }
 
-    public function insertProduk()
+    public function cetakTransaksi($id_bumdes = null)
     {
-        $model = new \App\Models\ModelProduk();
+        $model = new \App\Models\ModelTransaksi();
         $data = [
-            'nama_produk' => $this->request->getPost('nama_produk'),
-            'deskripsi' => $this->request->getPost('deskripsi'),
-            'harga' => $this->request->getPost('harga'),
-            'stok' => $this->request->getPost('stok'),
-            'id_bumdes' => $this->request->getPost('id_bumdes'),
-        ];
-        $model->InsertData($data);
-        session()->setFlashdata('pesan', 'Data Produk Berhasil Ditambahkan!');
-        return redirect()->to('admin/bumdes/produk/' . $data['id_bumdes']);
-    }
-
-    public function editProduk($id_produk)
-    {
-        $model = new \App\Models\ModelProduk();
-        $produk = $model->DetailData($id_produk);
-        $data = [
-            'judul' => 'Edit Produk',
-            'subjudul' => 'Form Edit Produk BUMDes',
+            'judul' => 'Cetak Laporan Transaksi',
+            'subjudul' => 'Laporan Data Transaksi BUMDes',
             'menu' => 'bumdes',
-            'submenu' => 'produk',
-            'page' => 'admin/bumdes/v_produk_edit',
-            'produk' => $produk,
+            'submenu' => 'transaksi',
+            'page' => 'admin/bumdes/v_transaksi_cetak',
+            'transaksi' => $model->AllData($id_bumdes),
+            'id_bumdes' => $id_bumdes,
             'bumdes_list' => $this->db->table('tbl_bumdes')->get()->getResultArray(),
         ];
         return view('pages/v_template_back', $data);
-    }
-
-    public function updateProduk($id_produk)
-    {
-        $model = new \App\Models\ModelProduk();
-        $data = [
-            'id_produk' => $id_produk,
-            'nama_produk' => $this->request->getPost('nama_produk'),
-            'deskripsi' => $this->request->getPost('deskripsi'),
-            'harga' => $this->request->getPost('harga'),
-            'stok' => $this->request->getPost('stok'),
-            'id_bumdes' => $this->request->getPost('id_bumdes'),
-        ];
-        $model->updateData($data);
-        session()->setFlashdata('pesan', 'Data Produk Berhasil Diperbarui!');
-        return redirect()->to('admin/bumdes/produk/' . $data['id_bumdes']);
-    }
-
-    public function deleteProduk($id_produk)
-    {
-        $model = new \App\Models\ModelProduk();
-        $produk = $model->DetailData($id_produk);
-        $id_bumdes = $produk['id_bumdes'];
-        $model->DeleteData(['id_produk' => $id_produk]);
-        session()->setFlashdata('pesan', 'Data Produk Berhasil Dihapus!');
-        return redirect()->to('admin/bumdes/produk/' . $id_bumdes);
     }
 
     public function unitusaha($id_bumdes = null)

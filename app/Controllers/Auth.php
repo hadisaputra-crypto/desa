@@ -49,7 +49,7 @@ class Auth extends BaseController
       $password = sha1($this->request->getPost('password'));
 
 
-      $cek = $this->ModelAuth->LoginUser($username, $password);
+        $cek = $this->ModelAuth->LoginUser($username, $password);
       if ($cek) {
 
         // Tentukan role berdasarkan level di database
@@ -58,15 +58,22 @@ class Auth extends BaseController
             $role = 'admin';
         } elseif ($cek['level'] == 2) {
             $role = 'user';
+        } elseif ($cek['level'] == 3) {
+            $role = 'unit';
+        } elseif ($cek['level'] == 4) {
+            $role = 'desa';
+        } elseif ($cek['level'] == 5) {
+            $role = 'dinas';
         }
 
         $userData = [
             'id_user'  => $cek['id_user'],
             'username' => $username,
             'nama'     => $cek['nama_user'],
-            'role'     => $role,           // 'admin' atau 'user'
+            'role'     => $role,
             'level'    => $cek['level'],
             'id_bumdes'=> $cek['id_bumdes'],
+            'id_unit'  => $cek['id_unit'] ?? null,
             'logged_in'=> true
         ];
         session()->set('user', $userData);
@@ -75,6 +82,7 @@ class Auth extends BaseController
         session()->set('nama_user', $cek['nama_user']);
         session()->set('level', $cek['level']);
         session()->set('id_bumdes', $cek['id_bumdes']);
+        session()->set('id_unit', $cek['id_unit'] ?? null);
         session()->set('logged_in', true);
 
         if ($cek['level'] == 1) {
@@ -83,6 +91,15 @@ class Auth extends BaseController
           } elseif ($cek['level'] == 2) {
               // User BUMDes
               return redirect()->to('bumdes/beranda');
+          } elseif ($cek['level'] == 3) {
+              // User Unit Usaha
+              return redirect()->to('unit/beranda');
+          } elseif ($cek['level'] == 4) {
+              // Admin Desa
+              return redirect()->to('desa/beranda');
+          } elseif ($cek['level'] == 5) {
+              // Admin Dinas
+              return redirect()->to('dinas/beranda');
           } else {
               return redirect()->to('login')->with('error', 'Level tidak dikenali!');
         }

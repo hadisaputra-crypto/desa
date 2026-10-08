@@ -277,12 +277,10 @@ $admin_route_list = static function ($routes) {
     $routes->get('bumdes/transaksi/(:num)',   'Bumdes::transaksi/$1');
     $routes->get('bumdes/produk',             'Bumdes::produk');
     $routes->get('bumdes/produk/(:num)',      'Bumdes::produk/$1');
-    $routes->get('bumdes/produk/tambah',      'Bumdes::tambahProduk');
-    $routes->get('bumdes/produk/tambah/(:num)', 'Bumdes::tambahProduk/$1');
-    $routes->post('bumdes/produk/insert',     'Bumdes::insertProduk');
-    $routes->get('bumdes/produk/edit/(:num)',  'Bumdes::editProduk/$1');
-    $routes->post('bumdes/produk/update/(:num)', 'Bumdes::updateProduk/$1');
-    $routes->get('bumdes/produk/delete/(:num)', 'Bumdes::deleteProduk/$1');
+    $routes->get('bumdes/produk/cetak',       'Bumdes::cetakProduk');
+    $routes->get('bumdes/produk/cetak/(:num)', 'Bumdes::cetakProduk/$1');
+    $routes->get('bumdes/transaksi/cetak',    'Bumdes::cetakTransaksi');
+    $routes->get('bumdes/transaksi/cetak/(:num)', 'Bumdes::cetakTransaksi/$1');
     $routes->get('bumdes/unitusaha',          'Bumdes::unitusaha');
     $routes->get('bumdes/unitusaha/(:num)',   'Bumdes::unitusaha/$1');
     $routes->get('bumdes/unitusaha/tambah',    'Bumdes::tambahUnit');
@@ -319,7 +317,11 @@ $admin_route_list = static function ($routes) {
     $routes->get('Setting/Sambutan',          'Setting::getSambutan');
     $routes->post('setting/updatesambutan',   'Setting::updateSambutan');
     $routes->post('Setting/updateSambutan',   'Setting::updateSambutan');
-
+    $routes->get('setting/menuroles',         'Setting::getMenuRoles');
+    $routes->get('Setting/menuroles',         'Setting::getMenuRoles');
+    $routes->post('setting/updatemenuroles',  'Setting::updateMenuRoles');
+    $routes->post('Setting/updatemenuroles',  'Setting::updateMenuRoles');
+ 
     // User Management
     $routes->get('user',                    'User::getindex');
     $routes->get('User',                    'User::getindex');
@@ -374,8 +376,27 @@ $routes->group('bumdes', ['namespace' => 'App\Controllers\Bumdes', 'filter' => '
     $routes->get('unit/detail/(:num)',      'Unitusaha::detail/$1');
     $routes->get('unitusaha/detail/(:num)', 'Unitusaha::detail/$1');
 
+    // Kategori Transaksi — CRUD
+    $routes->get('kategoritransaksi',                 'Kategoritransaksi::index');
+    $routes->get('kategoritransaksi/create',          'Kategoritransaksi::create');
+    $routes->post('kategoritransaksi/store',          'Kategoritransaksi::store');
+    $routes->get('kategoritransaksi/edit/(:num)',     'Kategoritransaksi::edit/$1');
+    $routes->post('kategoritransaksi/update/(:num)',  'Kategoritransaksi::update/$1');
+    $routes->get('kategoritransaksi/delete/(:num)',   'Kategoritransaksi::delete/$1');
+
     // Modul lain
     $routes->get('laporan',    'Laporan::getIndex');
+    $routes->get('laporan/kas',    'Laporan::kas');
+    $routes->get('laporan/labarugi', 'Laporan::labaRugi');
+    $routes->get('laporan/neraca',  'Laporan::neraca');
+    $routes->get('laporan/shu',     'Laporan::shu');
+
+    // SHU — Pengaturan persentase alokasi
+    $routes->get('shu',             'Shu::index');
+    $routes->post('shu/update',     'Shu::update');
+    $routes->post('shu/add',        'Shu::add');
+    $routes->get('shu/delete/(:num)', 'Shu::delete/$1');
+    $routes->get('shu/reactivate/(:num)', 'Shu::reactivate/$1');
 
     // Transaksi — CRUD Lengkap
     $routes->get('transaksi',               'Transaksi::index');
@@ -440,4 +461,106 @@ $routes->group('bumdes', ['namespace' => 'App\Controllers\Bumdes', 'filter' => '
     $routes->get('user/edit/(:num)',        'User::edit/$1');
     $routes->post('user/update/(:num)',     'User::update/$1');
     $routes->get('user/delete/(:num)',      'User::delete/$1');
+});
+
+// =====================================================================
+// DESA ROUTES (Panel Admin Desa — level 4, read-only)
+// =====================================================================
+$routes->group('desa', ['namespace' => 'App\Controllers\Desa', 'filter' => 'auth'], static function ($routes) {
+    $routes->get('/',             'Dashboard::index');
+    $routes->get('beranda',       'Dashboard::index');
+    $routes->get('bumdes',        'Bumdes::index');
+    $routes->get('bumdes/detail/(:num)', 'Bumdes::detail/$1');
+    $routes->get('laporan/kas/(:num)',      'Laporan::kas/$1');
+    $routes->get('laporan/labarugi/(:num)', 'Laporan::labaRugi/$1');
+    $routes->get('laporan/neraca/(:num)',   'Laporan::neraca/$1');
+    $routes->get('laporan/shu/(:num)',      'Laporan::shu/$1');
+
+    // SHU — Admin desa mengatur alokasi per BUMDes
+    $routes->get('shu',             'Shu::index');
+    $routes->get('shu/edit/(:num)', 'Shu::edit/$1');
+    $routes->post('shu/update/(:num)', 'Shu::update/$1');
+    $routes->post('shu/add/(:num)',     'Shu::add/$1');
+    $routes->get('shu/delete/(:num)/(:num)', 'Shu::delete/$1/$2');
+    $routes->get('shu/reactivate/(:num)/(:num)', 'Shu::reactivate/$1/$2');
+});
+
+// =====================================================================
+// DINAS ROUTES (Panel Admin Dinas — level 5, read-only)
+// =====================================================================
+$routes->group('dinas', ['namespace' => 'App\Controllers\Dinas', 'filter' => 'auth'], static function ($routes) {
+    $routes->get('/',             'Dashboard::index');
+    $routes->get('beranda',       'Dashboard::index');
+    $routes->get('bumdes',        'Bumdes::index');
+    $routes->get('bumdes/detail/(:num)', 'Bumdes::detail/$1');
+    $routes->get('laporan/kas/(:num)',      'Laporan::kas/$1');
+    $routes->get('laporan/labarugi/(:num)', 'Laporan::labaRugi/$1');
+    $routes->get('laporan/neraca/(:num)',   'Laporan::neraca/$1');
+    $routes->get('laporan/shu/(:num)',      'Laporan::shu/$1');
+
+    // SHU — Admin dinas melihat alokasi per BUMDes (read-only)
+    $routes->get('shu',             'Shu::index');
+    $routes->get('shu/edit/(:num)', 'Shu::edit/$1');
+});
+
+// =====================================================================
+// UNIT USAHA ROUTES (Panel Unit Usaha — dilindungi filter auth)
+// =====================================================================
+$routes->group('unit', ['namespace' => 'App\Controllers\Unit', 'filter' => 'auth'], static function ($routes) {
+    $routes->get('/',             'Beranda::index');
+    $routes->get('beranda',       'Beranda::index');
+
+    // Anggota
+    $routes->get('anggota',                 'Anggota::index');
+    $routes->get('anggota/create',          'Anggota::create');
+    $routes->post('anggota/store',          'Anggota::store');
+    $routes->get('anggota/edit/(:num)',     'Anggota::edit/$1');
+    $routes->post('anggota/update/(:num)',  'Anggota::update/$1');
+    $routes->get('anggota/delete/(:num)',   'Anggota::delete/$1');
+    $routes->get('anggota/detail/(:num)',   'Anggota::detail/$1');
+
+    // Produk
+    $routes->get('produk',                  'Produk::index');
+    $routes->get('produk/create',           'Produk::create');
+    $routes->post('produk/store',           'Produk::store');
+    $routes->get('produk/edit/(:num)',      'Produk::edit/$1');
+    $routes->post('produk/update/(:num)',   'Produk::update/$1');
+    $routes->get('produk/delete/(:num)',    'Produk::delete/$1');
+    $routes->get('produk/detail/(:num)',    'Produk::detail/$1');
+
+    // Transaksi
+    $routes->get('transaksi',               'Transaksi::index');
+    $routes->get('transaksi/create',        'Transaksi::create');
+    $routes->post('transaksi/store',        'Transaksi::store');
+    $routes->get('transaksi/edit/(:num)',   'Transaksi::edit/$1');
+    $routes->post('transaksi/update/(:num)', 'Transaksi::update/$1');
+    $routes->get('transaksi/delete/(:num)', 'Transaksi::delete/$1');
+    $routes->get('transaksi/detail/(:num)', 'Transaksi::detail/$1');
+
+    // Layanan / Jasa
+    $routes->get('layanan',                 'Layanan::index');
+    $routes->get('layanan/create',          'Layanan::create');
+    $routes->post('layanan/store',          'Layanan::store');
+    $routes->get('layanan/edit/(:num)',     'Layanan::edit/$1');
+    $routes->post('layanan/update/(:num)',  'Layanan::update/$1');
+    $routes->get('layanan/delete/(:num)',   'Layanan::delete/$1');
+    $routes->get('layanan/detail/(:num)',   'Layanan::detail/$1');
+
+    // Laporan
+    $routes->get('laporan/kas',      'Laporan::kas');
+    $routes->get('laporan/labarugi', 'Laporan::labaRugi');
+    $routes->get('laporan/neraca',   'Laporan::neraca');
+
+    // Kategori Transaksi — CRUD
+    $routes->get('kategoritransaksi',                 'Kategoritransaksi::index');
+    $routes->get('kategoritransaksi/create',          'Kategoritransaksi::create');
+    $routes->post('kategoritransaksi/store',          'Kategoritransaksi::store');
+    $routes->get('kategoritransaksi/edit/(:num)',     'Kategoritransaksi::edit/$1');
+    $routes->post('kategoritransaksi/update/(:num)',  'Kategoritransaksi::update/$1');
+    $routes->get('kategoritransaksi/delete/(:num)',   'Kategoritransaksi::delete/$1');
+
+    // Profile
+    $routes->get('profile',                 'Profile::getIndex');
+    $routes->post('profile/update',         'Profile::updateProfile');
+    $routes->post('profile/password',       'Profile::changePassword');
 });

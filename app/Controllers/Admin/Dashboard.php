@@ -23,14 +23,20 @@ class Dashboard extends BaseController
                 'submenu' => '',
                 'page' => 'admin/v_dashboard',
                 'total_layanan' => $this->ModelHome->TotalLayanan(),
-                'total_team' => $this->ModelHome->TotalTeam(),
-                'total_agenda' => $this->ModelHome->TotalAgenda(),
                 'total_pengumuman' => $this->ModelHome->TotalPengumuman(),
+                'total_agenda' => $this->ModelHome->TotalAgenda(),
+                'total_berita' => $this->ModelHome->TotalBerita(),
                 'total_lembaga' => $this->ModelHome->TotalLembaga(),
                 'total_dokumen' => $this->ModelHome->TotalDokumen(),
-                'total_berita' => $this->ModelHome->TotalBerita(),
+                'total_album' => $this->ModelHome->TotalAlbum(),
+                'total_video' => $this->ModelHome->TotalVideo(),
+                'total_slider' => $this->ModelHome->TotalSlider(),
+                'total_bumdes' => $this->ModelHome->TotalBumdes(),
+                'total_unit' => $this->ModelHome->TotalUnitUsaha(),
+                'total_anggota' => $this->ModelHome->TotalAnggota(),
+                'total_produk' => $this->ModelHome->TotalProduk(),
+                'total_transaksi' => $this->ModelHome->TotalTransaksi(),
                 'total_user' => $this->ModelHome->TotalUser(),
-
             ];
         return view('pages/v_template_back', $data);
     }

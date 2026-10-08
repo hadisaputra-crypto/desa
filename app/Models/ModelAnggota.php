@@ -18,6 +18,13 @@ class ModelAnggota extends Model
         return $query->get()->getResultArray();
     }
 
+    public function AllDataByUnit($id_unit)
+    {
+        return $this->db->table($this->table)
+            ->where('id_unit', $id_unit)
+            ->get()->getResultArray();
+    }
+
     public function InsertData($data)
     {
         return $this->db->table($this->table)->insert($data);

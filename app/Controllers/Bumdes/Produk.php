@@ -4,16 +4,19 @@ namespace App\Controllers\Bumdes;
 use App\Controllers\BaseController;
 use App\Models\ModelProduk;
 use App\Models\ModelKategori;
+use App\Models\ModelUnitusaha;
 
 class Produk extends BaseController
 {
     protected $ModelProduk;
     protected $ModelKategori;
+    protected $ModelUnitusaha;
     
     public function __construct()
     {
         $this->ModelProduk = new ModelProduk();
         $this->ModelKategori = new ModelKategori();
+        $this->ModelUnitusaha = new ModelUnitusaha();
     }
     
     public function index()
@@ -26,7 +29,7 @@ class Produk extends BaseController
             'submenu' => '',
             'active_menu' => 'produk',
             'page' => 'user/v_produk',
-            'produk' => $this->ModelProduk->AllData($id_bumdes),
+            'produk' => $this->ModelProduk->AllDataByBumdesJoinUnit($id_bumdes),
         ];
         return view('pages/v_template_user', $data);
     }
@@ -42,6 +45,7 @@ class Produk extends BaseController
             'active_menu' => 'produk',
             'page' => 'user/v_produk_form',
             'kategori' => $this->ModelKategori->AllData($id_bumdes),
+            'unit' => $this->ModelUnitusaha->getByBumdes($id_bumdes),
             'validation' => \Config\Services::validation(),
         ];
         return view('pages/v_template_user', $data);
@@ -64,9 +68,11 @@ class Produk extends BaseController
             $foto->move('produk', $nama_foto);
         }
 
+        $id_unit = $this->request->getPost('id_unit');
         $data = [
             'nama_produk' => $this->request->getPost('nama_produk'),
             'id_kategori' => $this->request->getPost('id_kategori'),
+            'id_unit' => $id_unit ?: null,
             'harga' => $this->request->getPost('harga'),
             'stok' => $this->request->getPost('stok'),
             'satuan' => $this->request->getPost('satuan'),
@@ -92,6 +98,7 @@ class Produk extends BaseController
             'page' => 'user/v_produk_form',
             'produk' => $this->ModelProduk->DetailData($id_produk),
             'kategori' => $this->ModelKategori->AllData($id_bumdes),
+            'unit' => $this->ModelUnitusaha->getByBumdes($id_bumdes),
             'validation' => \Config\Services::validation(),
         ];
         return view('pages/v_template_user', $data);
@@ -119,10 +126,12 @@ class Produk extends BaseController
             }
         }
 
+        $id_unit = $this->request->getPost('id_unit');
         $data = [
             'id_produk' => $id_produk,
             'nama_produk' => $this->request->getPost('nama_produk'),
             'id_kategori' => $this->request->getPost('id_kategori'),
+            'id_unit' => $id_unit ?: null,
             'harga' => $this->request->getPost('harga'),
             'stok' => $this->request->getPost('stok'),
             'satuan' => $this->request->getPost('satuan'),

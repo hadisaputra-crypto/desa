@@ -288,4 +288,47 @@ class Setting extends BaseController
             return redirect()->to('Admin/Setting/Sambutan')->withInput();
         }
     }
+
+    public function getMenuRoles()
+    {
+        $web = $this->ModelSetting->Detail();
+        $menu_roles = json_decode($web['menu_roles'] ?? '{}', true);
+
+        $available_menus = [
+            'dashboard' => ['label' => 'Dashboard', 'icon' => 'fas fa-tachometer-alt'],
+            'bumdes' => ['label' => 'Data BUMDes', 'icon' => 'fas fa-shop'],
+            'bumdes_detail' => ['label' => 'Detail BUMDes (dari tabel)', 'icon' => 'fas fa-building'],
+            'laporan_kas' => ['label' => 'Laporan Buku Kas', 'icon' => 'fas fa-book'],
+            'laporan_labarugi' => ['label' => 'Laporan Laba Rugi', 'icon' => 'fas fa-chart-line'],
+            'laporan_neraca' => ['label' => 'Laporan Neraca', 'icon' => 'fas fa-balance-scale'],
+        ];
+
+        $data = [
+            'judul' => 'Pengaturan Menu Role',
+            'subjudul' => 'Atur menu yang tampil untuk Admin Desa & Admin Dinas',
+            'menu' => 'setting',
+            'submenu' => 'menuroles',
+            'page' => 'admin/setting/v_menu_roles',
+            'menu_roles' => $menu_roles,
+            'available_menus' => $available_menus,
+        ];
+        return view('pages/v_template_back', $data);
+    }
+
+    public function updateMenuRoles()
+    {
+        $level4 = $this->request->getPost('level4') ?? [];
+        $level5 = $this->request->getPost('level5') ?? [];
+
+        $data = [
+            'id' => '1',
+            'menu_roles' => json_encode([
+                '4' => $level4,
+                '5' => $level5,
+            ]),
+        ];
+        $this->ModelSetting->UpdateData($data);
+        session()->setFlashdata('update', 'Pengaturan menu role berhasil disimpan!');
+        return redirect()->to('admin/setting/menuroles');
+    }
 }

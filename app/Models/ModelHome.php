@@ -102,6 +102,26 @@ class ModelHome extends Model
         return $query->countAllResults();
     }
 
+    public function TotalAnggotaByUnit($id_unit)
+    {
+        return $this->db->table('tbl_anggota')->where('id_unit', $id_unit)->countAllResults();
+    }
+
+    public function TotalProdukByUnit($id_unit)
+    {
+        return $this->db->table('tbl_produk')->where('id_unit', $id_unit)->countAllResults();
+    }
+
+    public function TotalTransaksiByUnit($id_unit)
+    {
+        return $this->db->table('tbl_transaksi')->where('id_unit', $id_unit)->countAllResults();
+    }
+
+    public function TotalLayananByUnit($id_unit)
+    {
+        return $this->db->table('tbl_layanan')->where('id_unit', $id_unit)->countAllResults();
+    }
+
     public function TotalTeam()
     {
         return $this->db->table('tbl_team')->countAllResults();
@@ -120,6 +140,35 @@ class ModelHome extends Model
     public function TotalDokumen()
     {
         return $this->db->table('tbl_dokumen')->countAllResults();
+    }
+
+    public function TotalAlbum()
+    {
+        return $this->db->table('tbl_album')->countAllResults();
+    }
+
+    public function TotalVideo()
+    {
+        return $this->db->table('tbl_video')->countAllResults();
+    }
+
+    public function TotalSlider()
+    {
+        return $this->db->table('tbl_slider')->countAllResults();
+    }
+
+    public function TotalBumdes()
+    {
+        return $this->db->table('tbl_bumdes')->countAllResults();
+    }
+
+    public function TotalTransaksi($id_bumdes = null)
+    {
+        $query = $this->db->table('tbl_transaksi');
+        if ($id_bumdes !== null) {
+            $query->where('id_bumdes', $id_bumdes);
+        }
+        return $query->countAllResults();
     }
 
     public function AllPengumuman()

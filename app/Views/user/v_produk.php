@@ -19,6 +19,7 @@
                 <tr class="bg-biru-pastel text-biru-tua">
                     <th class="p-4 font-semibold text-sm">No</th>
                     <th class="p-4 font-semibold text-sm">Nama Produk</th>
+                    <th class="p-4 font-semibold text-sm">Unit Usaha</th>
                     <th class="p-4 font-semibold text-sm text-right">Harga</th>
                     <th class="p-4 font-semibold text-sm text-center">Stok</th>
                     <th class="p-4 font-semibold text-sm text-center">Status</th>
@@ -32,6 +33,9 @@
                     <td class="p-4">
                         <div class="font-medium text-gray-900"><?= $row['nama_produk'] ?></div>
                         <div class="text-xs text-gray-400">ID: #PRO-<?= str_pad($row['id_produk'], 4, '0', STR_PAD_LEFT) ?></div>
+                    </td>
+                    <td class="p-4 text-sm text-gray-600">
+                        <?= $row['nama_unit'] ?? '-' ?>
                     </td>
                     <td class="p-4 text-sm font-bold text-gray-700 text-right">
                         Rp <?= number_format($row['harga'], 0, ',', '.') ?>

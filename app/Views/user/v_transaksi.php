@@ -20,6 +20,7 @@
                     <th class="p-4 font-semibold text-sm">No</th>
                     <th class="p-4 font-semibold text-sm">Tanggal</th>
                     <th class="p-4 font-semibold text-sm">Keterangan</th>
+                    <th class="p-4 font-semibold text-sm">Unit Usaha</th>
                     <th class="p-4 font-semibold text-sm">Tipe</th>
                     <th class="p-4 font-semibold text-sm text-right">Nominal</th>
                     <th class="p-4 font-semibold text-sm text-center">Aksi</th>
@@ -34,15 +35,18 @@
                         <div class="font-medium text-gray-900"><?= $row['keterangan'] ?></div>
                         <div class="text-xs text-gray-400"><?= $row['kategori'] ?? '' ?></div>
                     </td>
+                    <td class="p-4 text-sm text-gray-600"><?= $row['nama_unit'] ?? '-' ?></td>
                     <td class="p-4 text-sm">
                         <?php if (($row['tipe'] ?? '') == 'pemasukan'): ?>
                             <span class="px-2 py-1 rounded bg-green-50 text-green-600 text-xs font-bold uppercase">Pemasukan</span>
+                        <?php elseif (($row['tipe'] ?? '') == 'modal'): ?>
+                            <span class="px-2 py-1 rounded bg-purple-50 text-purple-600 text-xs font-bold uppercase">Modal</span>
                         <?php else: ?>
                             <span class="px-2 py-1 rounded bg-red-50 text-red-600 text-xs font-bold uppercase">Pengeluaran</span>
                         <?php endif; ?>
                     </td>
-                    <td class="p-4 text-sm font-bold text-right <?= ($row['tipe'] ?? '') == 'pemasukan' ? 'text-green-600' : 'text-red-600' ?>">
-                        <?= ($row['tipe'] ?? '') == 'pemasukan' ? '+' : '-' ?> Rp <?= number_format($row['nominal'] ?? 0, 0, ',', '.') ?>
+                    <td class="p-4 text-sm font-bold text-right <?= ($row['tipe'] ?? '') == 'pengeluaran' ? 'text-red-600' : 'text-green-600' ?>">
+                        <?= ($row['tipe'] ?? '') == 'pengeluaran' ? '-' : '+' ?> Rp <?= number_format($row['nominal'] ?? 0, 0, ',', '.') ?>
                     </td>
                     <td class="p-4 text-center">
                         <div class="flex justify-center gap-2">

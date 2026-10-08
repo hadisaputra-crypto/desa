@@ -19,6 +19,24 @@ class ModelTransaksi extends Model
             ->get()->getResultArray();
     }
 
+    public function AllDataByUnit($id_unit)
+    {
+        return $this->db->table($this->table)
+            ->where('id_unit', $id_unit)
+            ->orderBy('tanggal', 'DESC')
+            ->get()->getResultArray();
+    }
+
+    public function AllDataByBumdesJoinUnit($id_bumdes)
+    {
+        return $this->db->table($this->table)
+            ->select('tbl_transaksi.*, tbl_unit_usaha.nama_unit')
+            ->join('tbl_unit_usaha', 'tbl_unit_usaha.id_unit = tbl_transaksi.id_unit', 'left')
+            ->where('tbl_transaksi.id_bumdes', $id_bumdes)
+            ->orderBy('tbl_transaksi.tanggal', 'DESC')
+            ->get()->getResultArray();
+    }
+
     public function InsertData($data)
     {
         return $this->db->table($this->table)->insert($data);

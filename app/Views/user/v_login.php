@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | BUMDes Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -192,12 +193,18 @@
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" 
-                       class="form-control" 
-                       id="password" 
-                       name="password" 
-                       placeholder="Masukkan password" 
-                       required>
+                <div style="position:relative">
+                    <input type="password" 
+                           class="form-control" 
+                           id="password" 
+                           name="password" 
+                           placeholder="Masukkan password" 
+                           required
+                           style="padding-right:40px">
+                    <span onclick="var i=document.getElementById('password');i.type=i.type==='password'?'text':'password';this.classList.toggle('fa-eye-slash')" 
+                          class="fas fa-eye" 
+                          style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:#999;font-size:18px"></span>
+                </div>
             </div>
 
             <button type="submit" class="btn-login">Masuk</button>

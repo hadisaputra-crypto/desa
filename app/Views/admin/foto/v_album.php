@@ -77,14 +77,3 @@
     </div>
     <!-- /.card -->
 </div>
-
-<script>
-    $(function() {
-        $("#example1").DataTable({
-            "responsive": true,
-            "paging": true,
-            "searching": true,
-            "autoWidth": false,
-        });
-    });
-</script>

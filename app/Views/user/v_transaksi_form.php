@@ -21,9 +21,10 @@
 
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Tipe Transaksi</label>
-                        <select name="tipe" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-biru-utama focus:ring-2 focus:ring-biru-pastel transition">
+                        <select name="tipe" id="tipe" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-biru-utama focus:ring-2 focus:ring-biru-pastel transition">
                             <option value="pemasukan" <?= (old('tipe', $transaksi['tipe'] ?? '') == 'pemasukan') ? 'selected' : '' ?>>Pemasukan (+)</option>
                             <option value="pengeluaran" <?= (old('tipe', $transaksi['tipe'] ?? '') == 'pengeluaran') ? 'selected' : '' ?>>Pengeluaran (-)</option>
+                            <option value="modal" <?= (old('tipe', $transaksi['tipe'] ?? '') == 'modal') ? 'selected' : '' ?>>Modal</option>
                         </select>
                     </div>
 
@@ -36,11 +37,31 @@
                     </div>
 
                     <div class="col-span-2">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Kategori / Sumber</label>
-                        <input type="text" name="kategori" 
-                               class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-biru-utama focus:ring-2 focus:ring-biru-pastel transition"
-                               value="<?= old('kategori', $transaksi['kategori'] ?? '') ?>"
-                               placeholder="Contoh: Penjualan Produk, Biaya Listrik">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Kategori</label>
+                        <select name="kategori" id="kategori" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-biru-utama focus:ring-2 focus:ring-biru-pastel transition">
+                            <option value="">-- Pilih Kategori --</option>
+                            <?php foreach ($kategori_pemasukan as $k): ?>
+                            <option value="<?= $k['nama_kategori'] ?>" data-tipe="pemasukan" <?= (old('kategori', $transaksi['kategori'] ?? '') == $k['nama_kategori']) ? 'selected' : '' ?>><?= $k['nama_kategori'] ?></option>
+                            <?php endforeach; ?>
+                            <?php foreach ($kategori_pengeluaran as $k): ?>
+                            <option value="<?= $k['nama_kategori'] ?>" data-tipe="pengeluaran" <?= (old('kategori', $transaksi['kategori'] ?? '') == $k['nama_kategori']) ? 'selected' : '' ?>><?= $k['nama_kategori'] ?></option>
+                            <?php endforeach; ?>
+                            <?php foreach ($kategori_modal as $k): ?>
+                            <option value="<?= $k['nama_kategori'] ?>" data-tipe="modal" <?= (old('kategori', $transaksi['kategori'] ?? '') == $k['nama_kategori']) ? 'selected' : '' ?>><?= $k['nama_kategori'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Unit Usaha</label>
+                        <select name="id_unit" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-biru-utama focus:ring-2 focus:ring-biru-pastel transition">
+                            <option value="">-- Pilih Unit Usaha (opsional) --</option>
+                            <?php foreach ($unit as $u): ?>
+                            <option value="<?= $u['id_unit'] ?>" <?= (old('id_unit', $transaksi['id_unit'] ?? '') == $u['id_unit']) ? 'selected' : '' ?>>
+                                <?= $u['nama_unit'] ?>
+                            </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
 
                     <div class="col-span-2">
@@ -63,3 +84,27 @@
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('tipe').addEventListener('change', function() {
+    var tipe = this.value;
+    var opts = document.querySelectorAll('#kategori option');
+    var found = false;
+    opts.forEach(function(opt) {
+        if (opt.value === '') return;
+        if (opt.getAttribute('data-tipe') === tipe) {
+            opt.style.display = '';
+            if (!found) {
+                opt.selected = true;
+                found = true;
+            }
+        } else {
+            opt.style.display = 'none';
+        }
+    });
+    if (!found) document.getElementById('kategori').value = '';
+});
+
+var evt = new Event('change');
+document.getElementById('tipe').dispatchEvent(evt);
+</script>

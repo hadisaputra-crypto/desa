@@ -11,6 +11,7 @@ $web = $db->table('tbl_web')->where('id', '1')->get()->getRowArray();
     <title><?php echo $judul ?> | BUMDes Digital</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -27,6 +28,8 @@ $web = $db->table('tbl_web')->where('id', '1')->get()->getRowArray();
         }
     </script>
     <style>
+        * { box-sizing: border-box; }
+        img { max-width: 100%; height: auto; }
         .sidebar {
             scrollbar-width: thin;
             scrollbar-color: rgba(255,255,255,0.3) transparent;
@@ -55,14 +58,36 @@ $web = $db->table('tbl_web')->where('id', '1')->get()->getRowArray();
         .hamburger.active .hamburger-line:nth-child(3) {
             transform: rotate(-45deg) translate(6px, -6px);
         }
+        @media (max-width: 768px) {
+            .page-header { flex-direction: column; align-items: stretch !important; gap: 0.5rem; }
+            .page-header h2 { font-size: 1.1rem; }
+            .page-header a { justify-content: center !important; padding: 0.5rem 1rem !important; font-size: 0.85rem; gap: 0.35rem !important; }
+            .overflow-x-auto { overflow-x: auto !important; -webkit-overflow-scrolling: touch; scrollbar-width: auto; }
+            .overflow-x-auto::-webkit-scrollbar { height: 5px; }
+            .overflow-x-auto::-webkit-scrollbar-thumb { background: #1565c0; border-radius: 3px; }
+            .overflow-x-auto::-webkit-scrollbar-track { background: #e2e8f0; }
+            .overflow-x-auto table { width: max-content !important; min-width: 100%; }
+            .overflow-x-auto table th,
+            .overflow-x-auto table td { white-space: nowrap; }
+            .bg-white.overflow-hidden { overflow: visible !important; }
+            .content-area { padding: 0.5rem !important; }
+        }
+        @media (max-width: 576px) {
+            .overflow-x-auto table { font-size: 0.7rem; }
+            .overflow-x-auto table th,
+            .overflow-x-auto table td { padding: 0.25rem !important; }
+            .overflow-x-auto table td .flex.gap-2 { gap: 0.1rem; }
+            .overflow-x-auto table td a.p-2 { padding: 0.15rem 0.2rem !important; }
+            .overflow-x-auto table td a i { font-size: 0.65rem; }
+        }
     </style>
 </head>
-<body class="bg-gray-50 font-sans flex min-h-screen overflow-x-hidden">
+<body class="bg-gray-50 font-sans flex min-h-screen">
     <!-- Overlay untuk mobile -->
     <div class="sidebar-overlay fixed inset-0 bg-black bg-opacity-50 z-40 hidden" id="sidebarOverlay"></div>
 
     <!-- Sidebar -->
-    <div class="sidebar w-64 bg-gradient-to-b from-biru-tua to-biru-utama text-white fixed h-screen overflow-y-auto transition-all duration-300 z-50 -translate-x-full lg:translate-x-0" id="sidebar">
+    <div class="sidebar w-64 bg-gradient-to-b from-biru-tua to-biru-utama text-white fixed h-screen overflow-y-auto transition-all duration-300 z-50 -translate-x-full lg:translate-x-0 flex-shrink-0" id="sidebar">
         <div class="sidebar-header p-8 border-b border-white border-opacity-10 text-center relative">
             <img src="<?= base_url('logo/' . $web['logo']) ?>" alt="Logo BUMDes" class="w-16 h-16 rounded-full border-2 border-white mx-auto mb-4">
             <!-- <h3 class="text-lg font-semibold mb-1"><?= $user['nama'] ?? 'Nama User' ?></h3>
@@ -82,18 +107,20 @@ $web = $db->table('tbl_web')->where('id', '1')->get()->getRowArray();
                     </a>
                 </li>
                 
-                <li>
-                    <a href="<?= base_url('bumdes/anggota') ?>" 
-                    class="menu-item flex items-center px-6 py-3 text-white no-underline 
-                    transition-all duration-300 border-l-4 border-transparent 
-                    hover:bg-white hover:bg-opacity-10 hover:border-biru-cerah
-                    <?= $active_menu === 'anggota' ? 'bg-white bg-opacity-10 border-biru-cerah' : '' ?>">
-                        
-                        <i class="fas fa-users w-5 text-center mr-3"></i>
-                        <span class="flex-1">Anggota</span>
-                    </a>
-                </li>
-                <!-- PRODUK -->
+            <!-- UNIT USAHA -->
+            <li>
+                <a href="<?= base_url('bumdes/unitusaha') ?>" 
+                class="menu-item flex items-center px-6 py-3 text-white 
+                        no-underline transition-all duration-300 
+                        border-l-4 border-transparent 
+                        hover:bg-white hover:bg-opacity-10 hover:border-biru-cerah
+                        <?= $active_menu === 'unitusaha' ? 'bg-white bg-opacity-10 border-biru-cerah' : '' ?>">
+                    <i class="fas fa-store w-5 text-center mr-3"></i>
+                    <span class="flex-1">Unit Usaha</span>
+                </a>
+            </li>
+
+            <!-- PRODUK -->
             <li>
                 <a href="<?= base_url('bumdes/produk') ?>" 
                 class="menu-item flex items-center px-6 py-3 text-white 
@@ -119,45 +146,53 @@ $web = $db->table('tbl_web')->where('id', '1')->get()->getRowArray();
                 </a>
             </li>
 
-            <!-- UNIT USAHA -->
+            <!-- LAYANAN / JASA -->
             <li>
-                <a href="<?= base_url('bumdes/unitusaha') ?>" 
+                <a href="<?= base_url('bumdes/layanan') ?>" 
                 class="menu-item flex items-center px-6 py-3 text-white 
                         no-underline transition-all duration-300 
                         border-l-4 border-transparent 
                         hover:bg-white hover:bg-opacity-10 hover:border-biru-cerah
-                        <?= $active_menu === 'unitusaha' ? 'bg-white bg-opacity-10 border-biru-cerah' : '' ?>">
-                    <i class="fas fa-store w-5 text-center mr-3"></i>
-                    <span class="flex-1">Unit Usaha</span>
+                        <?= $active_menu === 'layanan' ? 'bg-white bg-opacity-10 border-biru-cerah' : '' ?>">
+                    <i class="fas fa-concierge-bell w-5 text-center mr-3"></i>
+                    <span class="flex-1">Layanan / Jasa</span>
                 </a>
             </li>
 
-                <li>
-                    <a href="<?= base_url('bumdes/layanan') ?>" class="menu-item flex items-center px-6 py-3 text-white no-underline transition-all duration-300 border-l-4 border-transparent hover:bg-white hover:bg-opacity-10 hover:border-biru-cerah <?= $active_menu === 'layanan' ? 'bg-white bg-opacity-10 border-biru-cerah' : '' ?>">
-                        <i class="fas fa-handshake w-5 text-center mr-3"></i>
-                        <span class="flex-1">Layanan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="<?= base_url('bumdes/transaksi') ?>" class="menu-item flex items-center px-6 py-3 text-white no-underline transition-all duration-300 border-l-4 border-transparent hover:bg-white hover:bg-opacity-10 hover:border-biru-cerah <?= $active_menu === 'transaksi' ? 'bg-white bg-opacity-10 border-biru-cerah' : '' ?>">
+            <!-- TRANSAKSI -->
+            <li class="menu-with-submenu">
+                <a href="javascript:void(0)" class="menu-item flex items-center justify-between px-6 py-3 text-white no-underline transition-all duration-300 border-l-4 border-transparent hover:bg-white hover:bg-opacity-10 hover:border-biru-cerah <?= in_array($active_menu, ['transaksi', 'kategoritransaksi']) ? 'bg-white bg-opacity-10 border-biru-cerah' : '' ?>">
+                    <div class="flex items-center">
                         <i class="fas fa-exchange-alt w-5 text-center mr-3"></i>
                         <span class="flex-1">Transaksi</span>
-                    </a>
-                </li>
-                 <li>
-                    <a href="<?= base_url('bumdes/pengumuman') ?>" class="menu-item flex items-center px-6 py-3 text-white no-underline transition-all duration-300 border-l-4 border-transparent hover:bg-white hover:bg-opacity-10 hover:border-biru-cerah <?= $active_menu === 'pengumuman' ? 'bg-white bg-opacity-10 border-biru-cerah' : '' ?>">
-                        <i class="fas fa-bullhorn w-5 text-center mr-3"></i>
-                        <span class="flex-1">Pengumuman</span>
-                    </a>
-                </li>
+                    </div>
+                    <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                </a>
+                <ul class="submenu pl-14 mt-1 space-y-1 hidden">
+                    <li>
+                        <a href="<?= base_url('bumdes/transaksi') ?>" class="block px-3 py-2 text-white text-opacity-80 no-underline transition-all duration-300 hover:bg-white hover:bg-opacity-10 hover:text-opacity-100 rounded">Transaksi Keuangan</a>
+                    </li>
+                    <li>
+                        <a href="<?= base_url('bumdes/kategoritransaksi') ?>" class="block px-3 py-2 text-white text-opacity-80 no-underline transition-all duration-300 hover:bg-white hover:bg-opacity-10 hover:text-opacity-100 rounded">Kategori Transaksi</a>
+                    </li>
+                </ul>
+            </li>
+
                 <li>
                     <a href="<?= base_url('bumdes/laporan') ?>" class="menu-item flex items-center px-6 py-3 text-white no-underline transition-all duration-300 border-l-4 border-transparent hover:bg-white hover:bg-opacity-10 hover:border-biru-cerah <?= $active_menu === 'laporan' ? 'bg-white bg-opacity-10 border-biru-cerah' : '' ?>">
                         <i class="fas fa-chart-bar w-5 text-center mr-3"></i>
                         <span class="flex-1">Laporan</span>
                     </a>
                 </li>
-               
-               
+
+                <!-- SHU -->
+                <li>
+                    <a href="<?= base_url('bumdes/shu') ?>" class="menu-item flex items-center px-6 py-3 text-white no-underline transition-all duration-300 border-l-4 border-transparent hover:bg-white hover:bg-opacity-10 hover:border-biru-cerah <?= $active_menu === 'shu' ? 'bg-white bg-opacity-10 border-biru-cerah' : '' ?>">
+                        <i class="fas fa-percentage w-5 text-center mr-3"></i>
+                        <span class="flex-1">Pengaturan SHU</span>
+                    </a>
+                </li>
+                
                 <!-- Menu dengan submenu contoh -->
                 <li class="menu-with-submenu">
                     <a href="javascript:void(0)" class="menu-item flex items-center justify-between px-6 py-3 text-white no-underline transition-all duration-300 border-l-4 border-transparent hover:bg-white hover:bg-opacity-10 hover:border-biru-cerah">
@@ -183,11 +218,7 @@ $web = $db->table('tbl_web')->where('id', '1')->get()->getRowArray();
                                 Manajemen User
                             </a>
                         </li>
-                        <li>
-                            <a href="<?= base_url('bumdes/settings/backup') ?>" class="block px-3 py-2 text-white text-opacity-80 no-underline transition-all duration-300 hover:bg-white hover:bg-opacity-10 hover:text-opacity-100 rounded">
-                                Backup Data
-                            </a>
-                        </li>
+
                     </ul>
                 </li>
             </ul>
@@ -195,7 +226,7 @@ $web = $db->table('tbl_web')->where('id', '1')->get()->getRowArray();
     </div>
 
     <!-- Main Content -->
-    <div class="main-content flex-1 ml-0 lg:ml-64 transition-all duration-300 min-h-screen" id="mainContent">
+    <div class="main-content flex-1 ml-0 lg:ml-64 transition-all duration-300 min-h-screen min-w-0" id="mainContent">
         <!-- Top Navbar -->
         <div class="top-navbar bg-white px-4 sm:px-6 py-3 shadow-sm sticky top-0 z-30 flex justify-between items-center">
             <div class="nav-left flex items-center gap-3">

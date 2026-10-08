@@ -18,6 +18,13 @@ class ModelUnitusaha extends Model
         return $query->get()->getResultArray();
     }
 
+    public function getByBumdes($id_bumdes)
+    {
+        return $this->db->table($this->table)
+            ->where('id_bumdes', $id_bumdes)
+            ->get()->getResultArray();
+    }
+
     public function InsertData($data)
     {
         return $this->db->table($this->table)->insert($data);

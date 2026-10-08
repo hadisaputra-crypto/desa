@@ -1,118 +1,221 @@
-<div class="col-lg-3 col-6">
-    <!-- small box -->
-    <div class="small-box bg-primary">
-        <div class="inner">
-            <h3><?= $total_layanan ?></h3>
-            <p>Layanan</p>
-        </div>
-        <div class="icon">
-            <i class="fas fa-pen"></i>
-        </div>
-        <a href="<?= base_url('Admin/Layanan') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-</div>
-<div class="col-lg-3 col-6">
-    <!-- small box -->
-    <div class="small-box bg-olive">
-        <div class="inner">
-            <h3><?= $total_team ?></h3>
 
-            <p>Team</p>
-        </div>
-        <div class="icon">
-            <i class="fas fa-user-graduate"></i>
-        </div>
-        <a href="<?= base_url('Admin/Team') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-</div>
+<style>
+  .dashboard-sections {
+    width: 100%;
+}
 
-<!-- ./col -->
-<div class="col-lg-3 col-6">
-    <!-- small box -->
-    <div class="small-box bg-warning">
-        <div class="inner">
-            <h3><?= $total_pengumuman ?></h3>
+.dashboard-section {
+    display: block;
+    clear: both;
+    margin: 1rem;
+}
 
-            <p>Pengumuman</p>
-        </div>
-        <div class="icon">
-            <i class="fas fa-bullhorn"></i>
-        </div>
-        <a href="<?= base_url('Admin/Pengumuman') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-</div>
-<!-- ./col -->
-<div class="col-lg-3 col-6">
-    <!-- small box -->
-    <div class="small-box bg-danger">
-        <div class="inner">
-            <h3><?= $total_berita ?></h3>
+.dashboard-section .card {
+    width: 100%;
+    margin-bottom: 0;
+}
 
-            <p>Berita</p>
-        </div>
-        <div class="icon">
-            <i class="fas fa-newspaper"></i>
-        </div>
-        <a href="<?= base_url('Admin/Berita') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-</div>
+</style>
+<?php
+$sections = [
+    [
+        'title' => 'Website',
+        'icon'  => 'fas fa-globe',
+        'color' => 'lightblue',
+        'items' => [
+            [
+                'count' => $total_berita,
+                'label' => 'Berita',
+                'icon'  => 'fas fa-newspaper',
+                'color' => 'primary',
+                'url'   => 'admin/berita',
+            ],
+            [
+                'count' => $total_agenda,
+                'label' => 'Agenda',
+                'icon'  => 'fas fa-calendar',
+                'color' => 'info',
+                'url'   => 'admin/agenda',
+            ],
+            [
+                'count' => $total_pengumuman,
+                'label' => 'Pengumuman',
+                'icon'  => 'fas fa-bullhorn',
+                'color' => 'warning',
+                'url'   => 'admin/pengumuman',
+            ],
+            [
+                'count' => $total_layanan,
+                'label' => 'Layanan Publik',
+                'icon'  => 'fas fa-concierge-bell',
+                'color' => 'olive',
+                'url'   => 'admin/layanan',
+            ],
+            [
+                'count' => $total_lembaga,
+                'label' => 'Kerjasama',
+                'icon'  => 'fas fa-building',
+                'color' => 'teal',
+                'url'   => 'admin/lembaga',
+            ],
+            [
+                'count' => $total_dokumen,
+                'label' => 'Dokumen',
+                'icon'  => 'fas fa-file',
+                'color' => 'danger',
+                'url'   => 'admin/dokumen',
+            ],
+            [
+                'count' => $total_album,
+                'label' => 'Foto',
+                'icon'  => 'fas fa-images',
+                'color' => 'maroon',
+                'url'   => 'admin/foto',
+            ],
+            [
+                'count' => $total_video,
+                'label' => 'Video',
+                'icon'  => 'fas fa-video',
+                'color' => 'purple',
+                'url'   => 'admin/video',
+            ],
+        ],
+    ],
 
-<div class="col-lg-3 col-6">
-    <!-- small box -->
-    <div class="small-box bg-info">
-        <div class="inner">
-            <h3><?= $total_agenda ?></h3>
+    [
+        'title' => 'BUMDes',
+        'icon'  => 'fas fa-shop',
+        'color' => 'primary',
+        'items' => [
+            [
+                'count' => $total_bumdes,
+                'label' => 'Data BUMDes',
+                'icon'  => 'fas fa-shop',
+                'color' => 'primary',
+                'url'   => 'admin/bumdes',
+            ],
+            [
+                'count' => $total_unit,
+                'label' => 'Unit Usaha',
+                'icon'  => 'fas fa-store',
+                'color' => 'secondary',
+                'url'   => 'admin/bumdes/unitusaha',
+            ],
+            [
+                'count' => $total_anggota,
+                'label' => 'Anggota',
+                'icon'  => 'fas fa-users',
+                'color' => 'success',
+                'url'   => 'admin/bumdes/anggota',
+            ],
+            [
+                'count' => $total_produk,
+                'label' => 'Produk',
+                'icon'  => 'fas fa-box',
+                'color' => 'info',
+                'url'   => 'admin/bumdes/produk',
+            ],
+            [
+                'count' => $total_transaksi,
+                'label' => 'Transaksi',
+                'icon'  => 'fas fa-exchange-alt',
+                'color' => 'danger',
+                'url'   => 'admin/bumdes/transaksi',
+            ],
+            [
+                'count' => $total_layanan,
+                'label' => 'Layanan BUMDes',
+                'icon'  => 'fas fa-concierge-bell',
+                'color' => 'warning',
+                'url'   => 'admin/bumdes/layanan',
+            ],
+        ],
+    ],
 
-            <p>Agenda</p>
-        </div>
-        <div class="icon">
-            <i class="fas fa-calendar"></i>
-        </div>
-        <a href="<?= base_url('Admin/Agenda') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-</div>
+    [
+        'title' => 'Akun & Pengaturan',
+        'icon'  => 'fas fa-user-shield',
+        'color' => 'maroon',
+        'items' => [
+            [
+                'count' => $total_user,
+                'label' => 'Semua Pengguna',
+                'icon'  => 'fas fa-users-cog',
+                'color' => 'navy',
+                'url'   => 'admin/user',
+            ],
+            [
+                'count' => $total_slider,
+                'label' => 'Slider',
+                'icon'  => 'fas fa-images',
+                'color' => 'orange',
+                'url'   => 'admin/slider',
+            ],
+        ],
+    ],
+];
+?>
 
-<div class="col-lg-3 col-6">
-    <!-- small box -->
-    <div class="small-box bg-purple">
-        <div class="inner">
-            <h3><?= $total_lembaga ?></h3>
+<!-- SEMUA SECTION -->
+<div class="dashboard-sections">
 
-            <p>Kerjasama</p>
-        </div>
-        <div class="icon">
-            <i class="fas fa-building"></i>
-        </div>
-        <a href="<?= base_url('Admin/Lembaga') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-</div>
+    <?php foreach ($sections as $section): ?>
 
-<div class="col-lg-3 col-6">
-    <!-- small box -->
-    <div class="small-box bg-orange">
-        <div class="inner">
-            <h3><?= $total_dokumen ?></h3>
+        <!-- SATU SECTION = SATU BARIS PENUH -->
+        <div class="dashboard-section">
 
-            <p>Dokumen</p>
-        </div>
-        <div class="icon">
-            <i class="fas fa-file"></i>
-        </div>
-        <a href="<?= base_url('Admin/Dokumen') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-</div>
+            <div class="card card-outline card-<?= esc($section['color']) ?>">
 
-<div class="col-lg-3 col-6">
-    <!-- small box -->
-    <div class="small-box bg-success">
-        <div class="inner">
-            <h3><?= $total_user ?></h3>
+                <!-- HEADER SECTION -->
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="<?= esc($section['icon']) ?> mr-2"></i>
+                        <?= esc($section['title']) ?>
+                    </h3>
+                </div>
 
-            <p>User</p>
+                <!-- ITEM SECTION -->
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <?php foreach ($section['items'] as $item): ?>
+
+                            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
+
+                                <div class="small-box bg-<?= esc($item['color']) ?>">
+
+                                    <div class="inner">
+                                        <h3><?= esc($item['count']) ?></h3>
+                                        <p><?= esc($item['label']) ?></p>
+                                    </div>
+
+                                    <div class="icon">
+                                        <i class="<?= esc($item['icon']) ?>"></i>
+                                    </div>
+
+                                    <a
+                                        href="<?= base_url($item['url']) ?>"
+                                        class="small-box-footer"
+                                    >
+                                        Kelola
+                                        <i class="fas fa-arrow-circle-right"></i>
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        <?php endforeach; ?>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-        <div class="icon">
-            <i class="fas fa-file"></i>
-        </div>
-        <a href="<?= base_url('Admin/User') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
+
+    <?php endforeach; ?>
+
 </div>

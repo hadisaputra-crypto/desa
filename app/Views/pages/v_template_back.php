@@ -40,7 +40,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- AdminLTE (Theme) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
-  <!-- Custom Blue Theme Override -->
+  <!-- Custom Blue Theme Override + Responsive -->
   <style>
     :root { --primary: #1565c0; }
     .bg-primary, .btn-primary, .nav-pills .nav-link.active { background-color: #1565c0 !important; }
@@ -57,6 +57,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
     .main-header.navbar { border-bottom: 2px solid #1565c0 !important; }
     .content-header { background: #f4f6fb; }
     .page-item.active .page-link { background-color: #1565c0 !important; border-color: #1565c0 !important; }
+    /* Responsive global */
+    img { max-width: 100%; height: auto; }
+    .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .table-wrapper table { width: 100% !important; }
+    .card-group-responsive .card { min-width: 250px; }
+    @media (max-width: 768px) {
+      table:not(.table-wrapper table):not(.dataTable) { display: block; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+    }
+    @media (max-width: 576px) {
+      .content-header h1 { font-size: 1.25rem; }
+      .card-title { font-size: 1rem; }
+      .btn-group-responsive .btn { width: 100%; margin-bottom: 4px; }
+      .modal-dialog { margin: 10px; }
+      .table-wrapper table { font-size: 0.8rem; }
+      .table-wrapper table th, .table-wrapper table td { padding: 4px !important; }
+      .card-body { padding: 0.75rem; }
+      .pagination { flex-wrap: wrap; justify-content: center; }
+      .dt-buttons { display: flex; flex-wrap: wrap; gap: 2px; }
+      .dt-buttons .btn { margin-bottom: 2px; font-size: 0.75rem; padding: 2px 6px; }
+      .paging_simple_numbers .paginate_button { padding: 2px 6px; font-size: 0.75rem; }
+      select.input-sm { max-width: 60px; }
+    }
   </style>
 
   <!-- jQuery -->
@@ -154,277 +176,94 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Sidebar Menu -->
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar nav-compact nav-child-indent flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
+
             <li class="nav-item">
               <a href="<?= base_url('admin/dashboard') ?>" class="nav-link <?= $menu == 'dashboard' ? 'active' : '' ?>">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                  Dashboard
-                </p>
+                <p>Dashboard</p>
               </a>
             </li>
 
-            <li class="nav-item <?= $menu == 'profil' ? 'menu-open' : '' ?>">
-              <a href="#" class="nav-link <?= $menu == 'profil' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-landmark"></i>
-                <p>
-                  Profil
-                  <i class="right fas fa-angle-left"></i>
-                </p>
+            <li class="nav-item <?= $menu == 'konten' ? 'menu-open' : '' ?>">
+              <a href="#" class="nav-link <?= $menu == 'konten' ? 'active' : '' ?>">
+                <i class="nav-icon fas fa-globe"></i>
+                <p>Website<i class="right fas fa-angle-left"></i></p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/profil/tentang') ?>" class="nav-link <?= $submenu == 'tentang' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>About Us</p>
+                <li class="nav-item <?= $menu == 'profil' ? 'menu-open' : '' ?>">
+                  <a href="#" class="nav-link <?= $menu == 'profil' ? 'active' : '' ?>">
+                    <i class="fas fa-landmark nav-icon"></i>
+                    <p>Profil<i class="right fas fa-angle-left"></i></p>
                   </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item"><a href="<?= base_url('admin/profil/tentang') ?>" class="nav-link <?= $submenu == 'tentang' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>About Us</p></a></li>
+                    <li class="nav-item"><a href="<?= base_url('admin/profil/visimisi') ?>" class="nav-link <?= $submenu == 'visimisi' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Visi & Misi</p></a></li>
+                    <li class="nav-item"><a href="<?= base_url('admin/profil/strukturorganisasi') ?>" class="nav-link <?= $submenu == 'struktur' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Struktur Organisasi</p></a></li>
+                  </ul>
                 </li>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/profil/visimisi') ?>" class="nav-link <?= $submenu == 'visimisi' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Visi Dan Misi</p>
+                <li class="nav-item"><a href="<?= base_url('admin/berita') ?>" class="nav-link <?= $submenu == 'berita' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Berita</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/berita/kategori') ?>" class="nav-link <?= $submenu == 'kategori' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Kategori Berita</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/agenda') ?>" class="nav-link <?= $submenu == 'agenda' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Agenda</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/pengumuman') ?>" class="nav-link <?= $menu == 'pengumuman' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Pengumuman</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/layanan') ?>" class="nav-link <?= $menu == 'prodi' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Layanan Publik</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/dokumen') ?>" class="nav-link <?= $menu == 'dokumen' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Dokumen</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/lembaga') ?>" class="nav-link <?= $menu == 'lembaga' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Kerjasama</p></a></li>
+                <li class="nav-item <?= $menu == 'gallery' ? 'menu-open' : '' ?>">
+                  <a href="#" class="nav-link <?= $menu == 'gallery' ? 'active' : '' ?>">
+                    <i class="far fa-image nav-icon"></i>
+                    <p>Galeri<i class="right fas fa-angle-left"></i></p>
                   </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/profil/strukturorganisasi') ?>" class="nav-link <?= $submenu == 'struktur' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Struktur Organisasi</p>
-                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item"><a href="<?= base_url('admin/foto') ?>" class="nav-link <?= $submenu == 'foto' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Foto</p></a></li>
+                    <li class="nav-item"><a href="<?= base_url('admin/video') ?>" class="nav-link <?= $submenu == 'video' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Video</p></a></li>
+                  </ul>
                 </li>
               </ul>
             </li>
-
-            <li class="nav-item">
-              <a href="<?= base_url('admin/layanan') ?>" class="nav-link <?= $menu == 'prodi' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-pen"></i>
-                <p>
-                  Layanan
-                </p>
-              </a>
-            </li>
-
-            <!-- <li class="nav-item">
-              <a href="<?= base_url('admin/buku') ?>" class="nav-link <?= $menu == 'prodi' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-book"></i>
-                <p>
-                  Buku
-                </p>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="<?= base_url('admin/team') ?>" class="nav-link <?= $menu == 'team' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-users"></i>
-                <p>
-                  Team
-                </p>
-              </a>
-            </li> -->
-
-            <li class="nav-item">
-              <a href="<?= base_url('admin/agenda') ?>" class="nav-link <?= $submenu == 'agenda' ? 'active' : '' ?>">
-                <i class="fas fa-calendar nav-icon"></i>
-                <p>Agenda</p>
-              </a>
-            </li>
-
-            <li class="nav-item <?= $menu == 'berita' ? 'menu-open' : '' ?>">
-              <a href="#" class="nav-link <?= $menu == 'berita' ? 'active' : '' ?>">
-                <i class="nav-icon far fa-newspaper"></i>
-                <p>
-                  Berita
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/berita/kategori') ?>" class="nav-link <?= $submenu == 'kategori' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Kategori</p>
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/berita') ?>" class="nav-link <?= $submenu == 'berita' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Berita</p>
-                  </a>
-                </li>
-
-              </ul>
-            </li>
-
-            <li class="nav-item <?= $menu == 'gallery' ? 'menu-open' : '' ?>">
-              <a href="#" class="nav-link <?= $menu == 'gallery' ? 'active' : '' ?>">
-                <i class="nav-icon far fa-image"></i>
-                <p>
-                  Galleri
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/foto') ?>" class="nav-link <?= $submenu == 'foto' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Foto</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/video') ?>" class="nav-link <?= $submenu == 'video' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Video</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-            <li class="nav-item">
-              <a href="<?= base_url('admin/pengumuman') ?>" class="nav-link <?= $menu == 'pengumuman' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-bullhorn"></i>
-                <p>
-                  Pengumuman
-                </p>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="<?= base_url('admin/dokumen') ?>" class="nav-link <?= $menu == 'dokumen' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-file"></i>
-                <p>
-                  Dokumen
-                </p>
-              </a>
-            </li>
-
-
-
-            <li class="nav-item">
-              <a href="<?= base_url('admin/lembaga') ?>" class="nav-link <?= $menu == 'lembaga' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-building"></i>
-                <p>
-                  Kerjasama
-                </p>
-              </a>
-            </li>
-
 
             <li class="nav-item <?= $menu == 'bumdes' ? 'menu-open' : '' ?>">
               <a href="#" class="nav-link <?= $menu == 'bumdes' ? 'active' : '' ?>">
                 <i class="nav-icon fas fa-shop"></i>
-                <p>
-                  BUMDes
-                  <i class="right fas fa-angle-left"></i>
-                </p>
+                <p>BUMDes<i class="right fas fa-angle-left"></i></p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/bumdes') ?>" class="nav-link <?= $submenu == 'list' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon text-info"></i>
-                    <p>Data BUMDes</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/bumdes/anggota') ?>" class="nav-link <?= $submenu == 'anggota' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon text-success"></i>
-                    <p>Anggota</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/bumdes/layanan') ?>" class="nav-link <?= $submenu == 'layanan' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon text-warning"></i>
-                    <p>Layanan</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/bumdes/produk') ?>" class="nav-link <?= $submenu == 'produk' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon text-primary"></i>
-                    <p>Produk</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/bumdes/transaksi') ?>" class="nav-link <?= $submenu == 'transaksi' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon text-danger"></i>
-                    <p>Transaksi</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/bumdes/unitusaha') ?>" class="nav-link <?= $submenu == 'unitusaha' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon text-secondary"></i>
-                    <p>Unit Usaha</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/bumdes/user') ?>" class="nav-link <?= $submenu == 'user' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon text-white"></i>
-                    <p>Pengguna BUMDes</p>
-                  </a>
-                </li>
+                <li class="nav-item"><a href="<?= base_url('admin/bumdes') ?>" class="nav-link <?= $submenu == 'list' ? 'active' : '' ?>"><i class="far fa-circle nav-icon text-info"></i><p>Data BUMDes</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/bumdes/unitusaha') ?>" class="nav-link <?= $submenu == 'unitusaha' ? 'active' : '' ?>"><i class="far fa-circle nav-icon text-secondary"></i><p>Unit Usaha</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/bumdes/anggota') ?>" class="nav-link <?= $submenu == 'anggota' ? 'active' : '' ?>"><i class="far fa-circle nav-icon text-success"></i><p>Anggota</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/bumdes/produk') ?>" class="nav-link <?= $submenu == 'produk' ? 'active' : '' ?>"><i class="far fa-circle nav-icon text-primary"></i><p>Produk</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/bumdes/transaksi') ?>" class="nav-link <?= $submenu == 'transaksi' ? 'active' : '' ?>"><i class="far fa-circle nav-icon text-danger"></i><p>Transaksi</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/bumdes/layanan') ?>" class="nav-link <?= $submenu == 'layanan' ? 'active' : '' ?>"><i class="far fa-circle nav-icon text-warning"></i><p>Layanan BUMDes</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/bumdes/user') ?>" class="nav-link <?= $submenu == 'user' ? 'active' : '' ?>"><i class="far fa-circle nav-icon text-white"></i><p>Pengguna</p></a></li>
               </ul>
             </li>
 
-            
-
-
+            <li class="nav-item <?= $menu == 'akun' ? 'menu-open' : '' ?>">
+              <a href="#" class="nav-link <?= $menu == 'akun' ? 'active' : '' ?>">
+                <i class="nav-icon fas fa-user-shield"></i>
+                <p>Akun<i class="right fas fa-angle-left"></i></p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item"><a href="<?= base_url('admin/user') ?>" class="nav-link <?= ($submenu == 'semua') ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Semua Pengguna</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/user') ?>?level=2" class="nav-link <?= ($level_filter ?? null == 2) ? 'active' : '' ?>"><i class="far fa-circle nav-icon text-info"></i><p>Admin BUMDes</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/user') ?>?level=4" class="nav-link <?= ($level_filter ?? null == 4) ? 'active' : '' ?>"><i class="far fa-circle nav-icon text-success"></i><p>Admin Desa</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/user') ?>?level=5" class="nav-link <?= ($level_filter ?? null == 5) ? 'active' : '' ?>"><i class="far fa-circle nav-icon text-warning"></i><p>Admin Dinas</p></a></li>
+              </ul>
+            </li>
 
             <li class="nav-item <?= $menu == 'setting' ? 'menu-open' : '' ?>">
               <a href="#" class="nav-link <?= $menu == 'setting' ? 'active' : '' ?>">
                 <i class="nav-icon fas fa-cogs"></i>
-                <p>
-                  Setting
-                  <i class="right fas fa-angle-left"></i>
-                </p>
+                <p>Pengaturan<i class="right fas fa-angle-left"></i></p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/setting/logo') ?>" class="nav-link <?= $submenu == 'logo' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Logo</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/setting/header') ?>" class="nav-link <?= $submenu == 'header' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Header</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/setting/lembaga') ?>" class="nav-link <?= $submenu == 'lembaga' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Lembaga</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/app') ?>" class="nav-link <?= $submenu == 'app' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>App</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/slider') ?>" class="nav-link <?= $submenu == 'slider' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Slider</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/setting/sambutan') ?>" class="nav-link <?= $submenu == 'sambutan' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Sambutan</p>
-                  </a>
-                </li>
-                <?php if (session()->get('level') == 1 || (session()->get('user') && session()->get('user')['level'] == 1)) { ?>
-                <li class="nav-item">
-                  <a href="<?= base_url('admin/user') ?>" class="nav-link <?= $menu == 'user' ? 'active' : '' ?>">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>User</p>
-                  </a>
-                </li>
-                <?php } ?>
+                <li class="nav-item"><a href="<?= base_url('admin/setting/logo') ?>" class="nav-link <?= $submenu == 'logo' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Logo & Header</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/slider') ?>" class="nav-link <?= $submenu == 'slider' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Slider</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/setting/lembaga') ?>" class="nav-link <?= $submenu == 'lembaga' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Identitas Lembaga</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/setting/sambutan') ?>" class="nav-link <?= $submenu == 'sambutan' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Sambutan</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/setting/menuroles') ?>" class="nav-link <?= ($submenu == 'menuroles') ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Menu Role</p></a></li>
+                <li class="nav-item"><a href="<?= base_url('admin/app') ?>" class="nav-link <?= $submenu == 'app' ? 'active' : '' ?>"><i class="far fa-circle nav-icon"></i><p>Aplikasi</p></a></li>
               </ul>
             </li>
-
-
-
 
           </ul>
         </nav>
@@ -489,6 +328,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $(this).remove();
       });
     }, 3000);
+
+    $(function() {
+      $('.table-responsive-dataTable, #example1, #example2, table.datatable').each(function() {
+        if (!$.fn.DataTable.isDataTable(this)) {
+          $(this).DataTable({
+            responsive: true,
+            autoWidth: true,
+            pageLength: 25,
+            language: { search: 'Cari:', lengthMenu: 'Tampilkan _MENU_ data', info: 'Menampilkan _START_ hingga _END_ dari _TOTAL_ data', paginate: { previous: 'Sebelumnya', next: 'Berikutnya' } }
+          });
+          if (!$(this).parent().hasClass('table-wrapper')) {
+            $(this).wrap('<div class="table-wrapper"></div>');
+          }
+        }
+      });
+    });
   </script>
 </body>
 

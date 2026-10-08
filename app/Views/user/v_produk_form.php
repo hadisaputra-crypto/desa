@@ -33,6 +33,18 @@
                     </div>
 
                     <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Unit Usaha</label>
+                        <select name="id_unit" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-biru-utama focus:ring-2 focus:ring-biru-pastel transition">
+                            <option value="">-- Pilih Unit Usaha --</option>
+                            <?php foreach ($unit as $u): ?>
+                            <option value="<?= $u['id_unit'] ?>" <?= (old('id_unit', $produk['id_unit'] ?? '') == $u['id_unit']) ? 'selected' : '' ?>>
+                                <?= $u['nama_unit'] ?>
+                            </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Harga (Rp)</label>
                         <input type="number" name="harga" 
                                class="w-full px-4 py-3 rounded-lg border <?= $validation->hasError('harga') ? 'border-red-500' : 'border-gray-200' ?> focus:border-biru-utama focus:ring-2 focus:ring-biru-pastel transition"

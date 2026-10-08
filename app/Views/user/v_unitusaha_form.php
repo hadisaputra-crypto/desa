@@ -1,13 +1,13 @@
 <div class="max-w-2xl mx-auto">
-    <div class="page-header flex items-center gap-4 mb-6">
-        <a href="<?= base_url('bumdes/unitusaha') ?>" class="text-biru-utama hover:text-biru-tua transition">
-            <i class="fas fa-arrow-left text-xl"></i>
+    <div class="page-header flex items-center gap-3 sm:gap-4 mb-6">
+        <a href="<?= base_url('bumdes/unitusaha') ?>" class="text-biru-utama hover:text-biru-tua transition flex-shrink-0">
+            <i class="fas fa-arrow-left text-lg sm:text-xl"></i>
         </a>
-        <h2 class="text-2xl font-bold text-biru-tua"><?= $judul ?></h2>
+        <h2 class="text-xl sm:text-2xl font-bold text-biru-tua"><?= $judul ?></h2>
     </div>
 
     <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-        <div class="p-8">
+        <div class="p-4 sm:p-8">
             <form action="<?= isset($unit) ? base_url('bumdes/unitusaha/update/'.$unit['id_unit']) : base_url('bumdes/unitusaha/store') ?>" method="POST">
                 <?= csrf_field() ?>
                 
@@ -52,7 +52,7 @@
                     </div>
                 </div>
 
-                <div class="flex gap-4 pt-4 border-t border-gray-100">
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 border-t border-gray-100">
                     <button type="submit" class="flex-1 bg-biru-utama text-white py-3 rounded-lg font-bold hover:bg-biru-tua transition shadow-lg">
                         <i class="fas fa-save mr-2"></i> Simpan Unit Usaha
                     </button>
